@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: chat
+  profiles:
+    active: ${ENVIRONMENT:dev}
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  flyway:
+    enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SECURITY_ISSUER_URI}
+  servlet:
+    multipart:
+      max-file-size: 50MB
+
+server:
+  servlet:
+    context-path: /api/v1
+
+application:
+  file:
+    uploads:
+      media-output-path: ./uploads
