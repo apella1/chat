@@ -35,11 +35,11 @@ data class Message(
     val senderId: UUID,
     @Column(name = "receiver_id", nullable = false)
     val receiverId: UUID,
-    val mediaFilePath: String,
+    val mediaFilePath: String?,
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
     val createdAt: LocalDateTime,
     @LastModifiedDate
-    @Column(name = "last_modified", insertable = false)
+    @Column(name = "last_modified", insertable = false, updatable = true)
     val lastModifiedDate: LocalDateTime
 )

@@ -1,17 +1,18 @@
 package me.apella.chat.entity
 
+import me.apella.chat.enums.MessageType
 import me.apella.chat.enums.NotificationType
-import java.util.UUID
+import java.util.*
 
-data class Notification @OptIn(ExperimentalUnsignedTypes::class) constructor(
+data class Notification(
     val chatId: UUID,
     val content: String,
     val senderId: UUID,
     val receiverId: UUID,
     val chatName: String,
-    val messageType: Message,
+    val messageType: MessageType,
     val type: NotificationType,
-    val media: UByteArray
+    val media: ByteArray? = null
 ) {
     @OptIn(ExperimentalUnsignedTypes::class)
     override fun equals(other: Any?): Boolean {

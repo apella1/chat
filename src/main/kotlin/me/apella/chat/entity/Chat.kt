@@ -20,7 +20,7 @@ data class Chat(
     @ManyToOne
     @JoinColumn(name = "recipient_id")
     val recipient: User,
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
     @OrderBy("createdAt DESC")
     val messages: List<Message>,
     @CreatedDate
@@ -32,7 +32,7 @@ data class Chat(
 ) {
     @Transient
     fun getChatName(senderId: String): String {
-        if (recipient.id == senderId) {
+        if (recipient.id.toString() == senderId) {
             return "${sender.firstName} ${sender.lastName}"
         }
 
@@ -40,18 +40,9 @@ data class Chat(
     }
 
     @Transient
-    fun getTargetChatName(senderId: String): String {
-        if (sender.id == senderId) {
-            return "${sender.firstName} ${sender.lastName}"
-        }
-
-        return "${recipient.firstName} ${recipient.lastName}"
-    }
-
-    @Transient
-    fun getUnreadMessages(): Int {
+    fun getUnreadMessages(userId: UUID): Int {
         return messages.filter { message ->
-            message.senderId == message.receiverId && message.state == MessageState.SENT
+            userId == message.receiverId && message.state == MessageState.SENT
         }.size
     }
 
