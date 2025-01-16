@@ -18,11 +18,11 @@ import java.util.UUID
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID,
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val lastSeen: LocalDateTime?,
+    var id: UUID,
+    var firstName: String,
+    var lastName: String,
+    var email: String,
+    var lastSeen: LocalDateTime?,
     @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
     val chatsAsSender: Set<Chat> = mutableSetOf(),
     @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
