@@ -25,7 +25,7 @@ data class User(
     var lastSeen: LocalDateTime?,
     @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
     val chatsAsSender: Set<Chat> = mutableSetOf(),
-    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
     val chatsAsRecipient: Set<Chat> = mutableSetOf(),
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)

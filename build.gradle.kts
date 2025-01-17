@@ -25,7 +25,7 @@ extra["snippetsDir"] = file("build/generated-snippets")
 dependencies {
     implementation("me.paulschwarz:spring-dotenv:4.0.0")
     implementation("org.springframework.security:spring-security-messaging")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
