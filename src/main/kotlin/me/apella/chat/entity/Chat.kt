@@ -5,11 +5,13 @@ import me.apella.chat.enums.MessageState
 import me.apella.chat.enums.MessageType
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
 @Table(name = "chats")
+@EntityListeners(AuditingEntityListener::class)
 data class Chat(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

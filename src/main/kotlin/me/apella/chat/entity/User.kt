@@ -2,6 +2,7 @@ package me.apella.chat.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EntityListeners
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -10,11 +11,13 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener::class)
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,7 +37,12 @@ data class User(
     @Column(name = "last_modified", insertable = false)
     val lastModifiedDate: LocalDateTime
 ) {
+    companion object {
+        const val ONLINE_THRESHOLD_MINUTES = 2L
+    }
+
     fun isOnline(): Boolean {
-        return lastSeen?.isAfter(LocalDateTime.now().minusMinutes(2)) == true
+        val now = LocalDateTime.now()
+        return lastSeen?.plusMinutes(ONLINE_THRESHOLD_MINUTES)?.isAfter(now) == true
     }
 }
