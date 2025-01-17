@@ -6,6 +6,7 @@ import me.apella.chat.entity.Message
 import me.apella.chat.entity.User
 import me.apella.chat.util.FileUtils
 import java.time.LocalDateTime
+import java.util.UUID
 
 fun User.toResponseDTO(): UserResponse {
     return UserResponse(
@@ -13,29 +14,24 @@ fun User.toResponseDTO(): UserResponse {
         firstName = this.firstName,
         lastName = this.lastName,
         email = this.email,
-        lastSeen = this.lastSeen!!,
+        lastSeen = this.lastSeen ?: LocalDateTime.now(),
         isOnline = this.isOnline()
     )
 }
 
 fun User.fromTokenAttributes(attributes: Map<String, Object>): User {
-    if (attributes.containsKey("sub")) {
-        this.id = attributes["sub"]?.toUUID()!!
-    }
+    this.id = attributes["sub"]?.toString()?.let {
+        UUID.fromString(it)
+    } ?: throw IllegalArgumentException("Required field 'sub' is missing or invalid!")
 
-    if (attributes.containsKey("given_name")) {
-        this.firstName = attributes["given_name"].toString()
-    } else if (attributes.containsKey("nickname")) {
-        this.firstName = attributes["nickname"].toString()
-    }
+    this.firstName =
+        attributes["given_name"]?.toString() ?: attributes["nickname"]?.toString()
+                ?: throw IllegalArgumentException("Required field 'given_name' or 'nickname' is missing!")
 
-    if (attributes.containsKey("family_name")) {
-        this.lastName = attributes["family_name"].toString()
-    }
+    this.lastName = attributes["family_name"]?.toString()
+        ?: throw IllegalArgumentException("Required property 'family_name is missing!")
 
-    if (attributes.containsKey("email")) {
-        this.email = attributes["email"].toString()
-    }
+    this.email = attributes["email"]?.toString() ?: throw IllegalArgumentException("Required field 'email' is missing!")
 
     this.lastSeen = LocalDateTime.now()
     return this
