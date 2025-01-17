@@ -10,6 +10,4 @@ interface UserRepository : JpaRepository<User, UUID> {
     fun findUserByEmail(@Param("email") email: String): User?
     @Query("select u from User u where u.id != :currentUserId")
     fun findAllUsersExceptSelf(currentUserId: String): List<User>
-    @Query("select u from User u where u.id = :publicId")
-    fun findUserByPublicId(@Param("publicId") publicId: UUID): User?
 }
