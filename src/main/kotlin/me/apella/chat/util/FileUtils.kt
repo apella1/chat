@@ -2,7 +2,6 @@ package me.apella.chat.util
 
 import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
-import sun.jvm.hotspot.HelloWorld.e
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -10,6 +9,8 @@ import java.nio.file.Files
 @Slf4j
 class FileUtils {
     private val logger = LoggerFactory.getLogger(FileUtils::class.java)
+    private val baseDirectory = File("uploads").absolutePath
+
     fun readFileFromLocation(fileUrl: String): ByteArray? {
         if (fileUrl.isBlank()) {
             logger.error("File url is blank!")
@@ -18,7 +19,7 @@ class FileUtils {
 
         return try {
             val filePath = File(fileUrl).toPath()
-            if (!filePath.normalize().startsWith(File("./uploads").toPath())) {
+            if (!filePath.startsWith(baseDirectory)) {
                 logger.error("Attempted to access file outside allowed directory: $fileUrl")
                 return null
             }
