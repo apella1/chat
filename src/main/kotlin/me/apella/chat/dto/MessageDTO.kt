@@ -28,7 +28,11 @@ data class MessageResponse(
         if (senderId != other.senderId) return false
         if (receiverId != other.receiverId) return false
         if (createdAt != other.createdAt) return false
-        if (!media.contentEquals(other.media)) return false
+        if(media != null && other.media != null) {
+            if (!media.contentEquals(other.media)) return false
+        } else if (media != other.media) {
+            return false
+        }
 
         return true
     }
