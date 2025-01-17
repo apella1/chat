@@ -9,8 +9,14 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(val userRepository: UserRepository) {
     fun findAllUsersExceptSelf(connectedUser: Authentication): List<UserResponse> {
-        return userRepository.findAllUsersExceptSelf(connectedUser.name).map {
-            it.toResponseDTO()
+        val userId = connectedUser.name ?: throw IllegalArgumentException("User ID cannot be null!")
+        return try {
+            userRepository.findAllUsersExceptSelf(userId).map {
+                it.toResponseDTO()
+            }
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to fetch users: ", e)
         }
+
     }
 }
