@@ -55,11 +55,12 @@ fun Message.toResponseDTO(): MessageResponse {
 
 
 fun Chat.toResponseDTO(senderId: String): ChatResponse {
+    val senderUUID = senderId.toUUID() ?: throw IllegalArgumentException("Invalid value provided for sender Id!")
     return ChatResponse(
         id = this.id.toString(),
         name = this.getChatName(senderId),
-        unreadCount = this.getUnreadMessages(senderId.toUUID()!!).toLong(),
-        lastMessage = this.getLastMessage().toString(),
+        unreadCount = this.getUnreadMessages(senderUUID).toLong(),
+        lastMessage = this.getLastMessage()?.toString() ?: "",
         isRecipientOnline = this.recipient.isOnline(),
         senderId = sender.id.toString(),
         receiverId = recipient.id.toString(),
