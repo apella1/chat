@@ -1,6 +1,6 @@
 # Chat Application
 
-# Spring Projects Used
+## Spring Projects Used
 
 - Spring Boot
 - Spring Data JPA
